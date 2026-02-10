@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-BOS Dashboard | Penalty Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container dashboard-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="dashboard-logo">
+                <i class="fas fa-brain"></i>
+                <span>AI-BOS Dashboard</span>
+            </div>
+            <div class="dashboard-actions">
+                <button class="btn btn-outline" onclick="showHistory()">
+                    <i class="fas fa-history"></i> History
+                </button>
+                <button class="btn btn-outline" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Left Panel: Calculator -->
+            <div class="left-panel">
+                <div class="calculator-card">
+                    <h2 class="card-title">
+                        <i class="fas fa-calculator"></i> Penalty Calculator
+                    </h2>
+                    
+                    <div class="input-group">
+                        <label for="delayMinutes">
+                            <i class="fas fa-clock"></i> Delay Duration (Minutes)
+                        </label>
+                        <div class="input-with-slider">
+                            <input type="number" 
+                                   id="delayMinutes" 
+                                   min="0" 
+                                   max="1440" 
+                                   value="45"
+                                   class="form-control"
+                                   onchange="updateSlider()">
+                            <div class="slider-container">
+                                <input type="range" 
+                                       id="delaySlider" 
+                                       min="0" 
+                                       max="1440" 
+                                       value="45"
+                                       class="slider"
+                                       oninput="updateInput()">
+                                <div class="slider-ticks">
+                                    <span>0</span>
+                                    <span>30</span>
+                                    <span>60</span>
+                                    <span>120</span>
+                                    <span>1440</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-help">
+                            Enter delay between 0-1440 minutes (24 hours)
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="serviceType">
+                            <i class="fas fa-concierge-bell"></i> Service Type
+                        </label>
+                        <select id="serviceType" class="form-control">
+                            <option value="standard">Standard Service</option>
+                            <option value="premium">Premium Service</option>
+                            <option value="express">Express Delivery</option>
+                            <option value="critical">Critical Operations</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="contractId">
+                            <i class="fas fa-file-contract"></i> Contract ID (Optional)
+                        </label>
+                        <input type="text" 
+                               id="contractId" 
+                               class="form-control"
+                               placeholder="CON-XXXX-XXXX">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary btn-large" onclick="calculatePenalty()">
+                            <i class="fas fa-bolt"></i> Calculate Penalty
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+
+                    <!-- Quick Calculate Buttons -->
+                    <div class="quick-calc">
+                        <h4>Quick Calculate:</h4>
+                        <div class="quick-buttons">
+                            <button class="btn btn-small" onclick="setDelay(15)">15 min</button>
+                            <button class="btn btn-small" onclick="setDelay(30)">30 min</button>
+                            <button class="btn btn-small" onclick="setDelay(45)">45 min</button>
+                            <button class="btn btn-small" onclick="setDelay(60)">60 min</button>
+                            <button class="btn btn-small" onclick="setDelay(90)">90 min</button>
+                            <button class="btn btn-small" onclick="setDelay(120)">120 min</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Rules Panel -->
+                <div class="rules-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-gavel"></i> Active Business Rules
+                    </h3>
+                    <div class="rules-list">
+                        <div class="rule-item">
+                            <div class="rule-header">
+                                <span class="rule-name">Grace Period</span>
+                                <span class="rule-threshold">≤ 30 min</span>
+                            </div>
+                            <div class="rule-description">No penalty for minor delays</div>
+                            <div class="rule-status active">Active</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-header">
+                                <span class="rule-name">Fixed Penalty</span>
+                                <span class="rule-threshold">31-60 min</span>
+                            </div>
+                            <div class="rule-description">Fixed charge of ₹500</div>
+                            <div class="rule-status active">Active</div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-header">
+                                <span class="rule-name">Progressive Penalty</span>
+                                <span class="rule-threshold">> 60 min</span>
+                            </div>
+                            <div class="rule-description">₹1000 + ₹25/min over 60</div>
+                            <div class="rule-status active">Active</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small>Rules are deterministic and auditable</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Results -->
+            <div class="right-panel">
+                <!-- Results Card -->
+                <div class="results-card" id="resultsCard" style="display: none;">
+                    <h2 class="card-title">
+                        <i class="fas fa-chart-line"></i> Calculation Results
+                    </h2>
+                    
+                    <div class="result-header">
+                        <div class="result-id">
+                            Request ID: <span id="requestId">--</span>
+                        </div>
+                        <div class="result-timestamp">
+                            <i class="fas fa-clock"></i> <span id="timestamp">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Penalty Summary -->
+                    <div class="result-summary">
+                        <div class="summary-item">
+                            <div class="summary-label">Delay Duration</div>
+                            <div class="summary-value" id="delayValue">-- minutes</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Penalty Applied</div>
+                            <div class="summary-value" id="penaltyStatus">--</div>
+                        </div>
+                        <div class="summary-item highlight">
+                            <div class="summary-label">Penalty Amount</div>
+                            <div class="summary-value amount" id="penaltyAmount">₹0.00</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Rule Applied</div>
+                            <div class="summary-value" id="ruleApplied">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Calculation Breakdown -->
+                    <div class="breakdown-card">
+                        <h4><i class="fas fa-calculator"></i> Calculation Breakdown</h4>
+                        <div class="breakdown-content" id="breakdownContent">
+                            <!-- Filled by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- AI Explanation -->
+                    <div class="explanation-card">
+                        <h4><i class="fas fa-robot"></i> AI Explanation</h4>
+                        <div class="explanation-content" id="explanationContent">
+                            <div class="loading-explanation">
+                                <i class="fas fa-spinner fa-spin"></i> Generating AI explanation...
+                            </div>
+                        </div>
+                        <div class="explanation-meta">
+                            <span class="confidence">
+                                <i class="fas fa-check-circle"></i> Confidence: 
+                                <span id="confidenceScore">--</span>
+                            </span>
+                            <span class="model">
+                                <i class="fas fa-microchip"></i> Model: Claude-3-Haiku
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="result-actions">
+                        <button class="btn btn-primary" onclick="sendNotification()" id="notifyBtn">
+                            <i class="fas fa-paper-plane"></i> Send Notification
+                        </button>
+                        <button class="btn btn-secondary" onclick="saveResult()">
+                            <i class="fas fa-save"></i> Save Result
+                        </button>
+                        <button class="btn btn-outline" onclick="shareResult()">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Default State -->
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="welcome-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h2>Penalty Calculator Ready</h2>
+                    <p>
+                        Enter delay minutes and click "Calculate Penalty" to get started.
+                        The system will apply business rules and provide AI-powered explanations.
+                    </p>
+                    <div class="welcome-features">
+                        <div class="feature">
+                            <i class="fas fa-bolt"></i> Real-time calculations
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-robot"></i> AI explanations
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-bell"></i> Smart notifications
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Panel -->
+                <div class="notification-card">
+                    <h3><i class="fas fa-bell"></i> Notification Center</h3>
+                    <div class="notification-form">
+                        <div class="input-group">
+                            <label>Recipient Email</label>
+                            <input type="email" 
+                                   id="recipientEmail" 
+                                   class="form-control"
+                                   placeholder="partner@company.com"
+                                   value="demo@ai-bos.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Recipient Phone</label>
+                            <input type="tel" 
+                                   id="recipientPhone" 
+                                   class="form-control"
+                                   placeholder="+91XXXXXXXXXX"
+                                   value="+919876543210">
+                        </div>
+                        <div class="notification-status" id="notificationStatus">
+                            Ready to send notifications
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Panel -->
+                <div class="history-card">
+                    <h3><i class="fas fa-history"></i> Recent Calculations</h3>
+                    <div class="history-list" id="historyList">
+                        <!-- History items will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+                <h3>Processing Calculation</h3>
+                <p>Applying business rules and generating AI explanation...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-BOS | AI-Based Operations System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI-BOS</span>
+                </div>
+                <div class="tagline">AI-Based Operations System</div>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="#features" class="nav-link"><i class="fas fa-cogs"></i> Features</a>
+                <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" onclick="window.location.href='#'">Login</button>
+                <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">Try Free</button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Intelligent Penalty Management System</h1>
+                <p class="hero-subtitle">
+                    AI-powered business operations system that automates delay analysis, 
+                    penalty calculations, and provides intelligent explanations for business decisions.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-large" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-calculator"></i> Start Calculation
+                    </button>
+                    <button class="btn btn-secondary btn-large" onclick="scrollToFeatures()">
+                        <i class="fas fa-play-circle"></i> See How It Works
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Monitoring</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">AI</div>
+                        <div class="stat-label">Explanations</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="dashboard-preview">
+                    <div class="preview-header">Live Calculation Preview</div>
+                    <div class="preview-content">
+                        <div class="preview-row">
+                            <span>Delay Minutes:</span>
+                            <input type="number" id="previewDelay" value="45" min="0" max="1440">
+                        </div>
+                        <div class="preview-row">
+                            <span>Penalty Amount:</span>
+                            <span class="preview-penalty">₹500.00</span>
+                        </div>
+                        <button class="btn btn-small" onclick="updatePreview()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <h2 class="section-title">Enterprise-Grade Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="feature-title">Real-Time Calculations</h3>
+                    <p class="feature-description">
+                        Deterministic penalty calculations based on configurable business rules.
+                        No AI hallucinations, just reliable business logic.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI Explanations</h3>
+                    <p class="feature-description">
+                        Get human-readable explanations for every decision, helping stakeholders
+                        understand why penalties were applied or waived.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Notifications</h3>
+                    <p class="feature-description">
+                        Automated email and SMS notifications for penalty decisions.
+                        Keep all stakeholders informed in real-time.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="feature-title">Analytics Dashboard</h3>
+                    <p class="feature-description">
+                        Comprehensive dashboard showing delay trends, penalty distributions,
+                        and business impact analysis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <h2 class="section-title">How AI-BOS Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Input Delay Minutes</h3>
+                    <p>Enter the delay duration in minutes through our intuitive interface or API.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Rule-Based Calculation</h3>
+                    <p>Our deterministic engine applies business rules to calculate penalties.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>AI Explanation</h3>
+                    <p>Get a clear, human-readable explanation of the decision logic.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Notifications & Dashboard</h3>
+                    <p>Automated alerts and comprehensive analytics for informed decisions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Rules -->
+        <section class="business-rules">
+            <h2 class="section-title">Sample Business Rules</h2>
+            <div class="rules-table-container">
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Delay Range</th>
+                            <th>Penalty Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0 - 30 minutes</td>
+                            <td><span class="badge badge-success">No Penalty</span></td>
+                            <td>₹0.00</td>
+                            <td>Grace period for minor operational delays</td>
+                        </tr>
+                        <tr>
+                            <td>31 - 60 minutes</td>
+                            <td><span class="badge badge-warning">Fixed Penalty</span></td>
+                            <td>₹500.00</td>
+                            <td>Moderate delay, fixed charge applies</td>
+                        </tr>
+                        <tr>
+                            <td>61+ minutes</td>
+                            <td><span class="badge badge-danger">Progressive Penalty</span></td>
+                            <td>₹1000 + ₹25/min over 60</td>
+                            <td>Significant delay, progressive charging</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <h2 class="cta-title">Ready to Automate Your Operations?</h2>
+            <p class="cta-subtitle">
+                Join enterprises that trust AI-BOS for intelligent penalty management.
+                Start with our free tier today.
+            </p>
+            <button class="btn btn-primary btn-xlarge" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-rocket"></i> Launch Calculator
+            </button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer" id="contact">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-brain"></i>
+                        <span>AI-BOS</span>
+                    </div>
+                    <p class="footer-description">
+                        AI-Based Operations System for modern enterprises.
+                        Making business decisions transparent and intelligent.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="#features">Features</a>
+                    <a href="#">Documentation</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Compliance</a>
+                    <a href="#">Security</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contact@ai-bos.com</p>
+                    <p><i class="fas fa-phone"></i> +91-XXX-XXXX-XXX</p>
+                    <div class="social-icons">
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-linkedin"></i>
+                        <i class="fab fa-github"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 AI-BOS. All rights reserved. | Enterprise SaaS Solution</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
